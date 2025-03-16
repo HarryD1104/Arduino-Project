@@ -1,10 +1,26 @@
-% Insert name here
-% Insert email address here
+% Harry Daniels
+% efyhd1@nottingham.ac.uk
 
 
 %% PRELIMINARY TASK - ARDUINO AND GIT INSTALLATION [10 MARKS]
+clear
+clc
 
-% Insert answers here
+a = arduino("COM3","Uno");
+
+t = [1:10];
+
+for i = 1:length(t)
+
+    writeDigitalPin(a,"D7",1)
+    pause(0.5)
+
+    writeDigitalPin(a,"D7",0)
+    pause(0.5)
+
+end
+
+
 
 %% TASK 1 - READ TEMPERATURE DATA, PLOT, AND WRITE TO A LOG FILE [20 MARKS]
 

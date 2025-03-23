@@ -33,22 +33,44 @@ V0 = 0.5;
 TC = 0.01;
 TA = zeros(1,duration);
 A0_voltage = zeros(1,duration);
-time = 1:duration;
+time = zeros(1,duration);
 
-for t = 1:duration    
-    A0_voltage(t) = readVoltage(a,"A0");
-    TA(t) = (A0_voltage(t) - V0) / TC;
+file_id = fopen('cabin_temperature.txt','w');
+d = datestr(now, 'dd-mm-yyyy');
+fprintf(file_id,'Data logging initiated - %s\nLocation: Nottingham\n',d);
 
-    fprintf('The current voltage and temperature are %f and %f respectively\n',A0_voltage(t),TA(t))
-    pause(1);
+
+for t = 1:duration;
     
-    minValue = min(TA(t));
-    maxValue = max(TA(t));
-    meanValue = mean(TA(t));
+   
+    
+        A0_voltage(t) = readVoltage(a,"A0");
+        TA(t) = (A0_voltage(t) - V0) / TC;
+        time(t) = t;
+        pause(1);
+
+       if t == 1;
+
+           fprintf(file_id,'\nMinute 0\nTemperature %.2f°C\n',TA(t));
+
+       end
+
+       if mod(t,60) == 0;
+
+           minutes = t / 60;
+           fprintf(file_id,'\nMinute %d\nTemperature %.2f°C\n',minutes,TA(t));
+
+       end
+
+        minValue = min(TA);
+        maxValue = max(TA);
+        meanValue = mean(TA);  
 
 end
 
-fprintf('The minimum, maximum and mean values of the calculated temperatures are %f, %f, %f\n',minValue,maxValue,meanValue)
+fprintf(file_id,'\nThe minimum, maximum and mean values of the calculated temperatures are %f, %f, %f\n',minValue,maxValue,meanValue)
+
+fclose(file_id);
 
 plot(time,TA);
 grid on
@@ -62,7 +84,7 @@ clear
 clc
 
 a = arduino("COM3","Uno");
-
+ 
 temp_monitor(a)
 
 %% TASK 3 - ALGORITHMS – TEMPERATURE PREDICTION [25 MARKS]
@@ -77,7 +99,29 @@ temp_prediction(a)
 
 %% TASK 4 - REFLECTIVE STATEMENT [5 MARKS]
 
-% Insert reflective statement here (400 words max)
+
+
+% For some of the tasks, I had to do some research on how to approach them.
+% I had to google how to use some different commands in order to achieve
+% the objective and goal of the project. For example, using mod() to make
+% the code display the temperature at certain times. I tried to create an
+% array and another for/while loop however this didn't seem to work.
+% Researching different commands allows me to have more tools in my
+% arsenal.
+
+% Strength wise, I've had experience with dynamic/live updating graphs in
+% matlab before when using it at school so this didn't prove to be as much
+% of a challenge as I thought it would. Furthermore, the electronics part
+% of the module definitely allowed the creation of the different circuits
+% to be a lot easier.
+
+% Limitations of the code would be to preallocate the time and temperature
+% arrays in temp_monitor.m however since this program continues
+% indefinitely i could not figure a way to do this. Preallocating the
+% arrays would save a lot of CPU space and allow the program to run more
+% smoothly. Another issue which would need improving for next time would be
+% a way to decrease the noise distruption within the circuit which leads to
+% varied and inaccurate results.
 
 
 %% TASK 5 - COMMENTING, VERSION CONTROL AND PROFESSIONAL PRACTICE [15 MARKS]

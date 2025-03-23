@@ -1,6 +1,7 @@
 
 function temp_monitor(a)
-    
+clc
+
 % TEMP_MONITOR 
 % This function reads the voltage from the arduino and calculates the
 % according temperature. It uses the tic and toc command to plot a graph
@@ -21,8 +22,8 @@ function temp_monitor(a)
     while true
         
         pause(0.1)
-        A0_voltage = readVoltage(a,"A0")
-        TA = (A0_voltage - V0) / TC
+        A0_voltage = readVoltage(a,"A0");
+        TA = (A0_voltage - V0) / TC;
         t = toc(startTime);
 
         timeElapsed = [timeElapsed,t];

@@ -1,0 +1,37 @@
+Data logging initiated - 23-03-2025
+Location: Nottingham
+
+Minute 0
+Temperature 23.31°C
+
+Minute 1
+Temperature 23.31°C
+
+Minute 2
+Temperature 22.83°C
+
+Minute 3
+Temperature 23.31°C
+
+Minute 4
+Temperature 23.31°C
+
+Minute 5
+Temperature 23.31°C
+
+Minute 6
+Temperature 23.31°C
+
+Minute 7
+Temperature 23.31°C
+
+Minute 8
+Temperature 23.31°C
+
+Minute 9
+Temperature 23.31°C
+
+Minute 10
+Temperature 22.83°C
+
+The minimum, maximum and mean values of the calculated temperatures are 22.825024, 23.313783, 23.214402

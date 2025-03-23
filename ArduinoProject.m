@@ -6,16 +6,16 @@
 clear
 clc
 
-a = arduino("COM3","Uno");
+a = arduino("COM3","Uno"); % assigns variable "a" to the arduino
 
-t = [1:10];
+t = 1:10; % creates vector 1-10
 
 for i = 1:length(t)
 
-    writeDigitalPin(a,"d7",1)
-    pause(0.5)
+    writeDigitalPin(a,"d7",1) % LED assigned to port D7, 1 sets the voltage high
+    pause(0.5) % waits half a second
 
-    writeDigitalPin(a,"d7",0)
+    writeDigitalPin(a,"d7",0) % sets voltage to low (turns off led)
     pause(0.5)
 
 end
@@ -28,50 +28,51 @@ clc
 
 a = arduino("COM3","Uno");
 
-duration = 600;
+duration = 600; % sets time to 600 seconds
 V0 = 0.5;
 TC = 0.01;
-TA = zeros(1,duration);
-A0_voltage = zeros(1,duration);
-time = zeros(1,duration);
+TA = zeros(1,duration); % preallocates the array for temperature
+A0_voltage = zeros(1,duration); % preallocates array for voltage readings
+time = zeros(1,duration); % preallocates time array
 
-file_id = fopen('cabin_temperature.txt','w');
-d = datestr(now, 'dd-mm-yyyy');
-fprintf(file_id,'Data logging initiated - %s\nLocation: Nottingham\n',d);
+file_id = fopen('cabin_temperature.txt','w'); % opens cabin temperature file
+d = datestr(now, 'dd-mm-yyyy'); % reads current date
+fprintf(file_id,'Data logging initiated - %s\nLocation: Nottingham\n',d); % prints the date and location to the file
 
 
-for t = 1:duration;
+for t = 1:duration; % loop from 1 - 600
     
-   
-    
-        A0_voltage(t) = readVoltage(a,"A0");
-        TA(t) = (A0_voltage(t) - V0) / TC;
-        time(t) = t;
+        A0_voltage(t) = readVoltage(a,"A0"); % reads voltage from circuit
+        TA(t) = (A0_voltage(t) - V0) / TC; % calculates temperature at each value of t 
+        time(t) = t; % stores t in an array
         pause(1);
 
-       if t == 1;
+       if t == 1; % when t is equal to 1 prints initial temperature to file
 
            fprintf(file_id,'\nMinute 0\nTemperature %.2f°C\n',TA(t));
 
        end
 
-       if mod(t,60) == 0;
+       if mod(t,60) == 0; % divides the current t value by 60, if this value doesn't have a reminder then it prints the current temp and corresponding minute
 
            minutes = t / 60;
            fprintf(file_id,'\nMinute %d\nTemperature %.2f°C\n',minutes,TA(t));
 
        end
 
-        minValue = min(TA);
+        % finds, min,max and mean value of the temperature data set
+        minValue = min(TA); 
         maxValue = max(TA);
         meanValue = mean(TA);  
 
 end
 
-fprintf(file_id,'\nThe minimum, maximum and mean values of the calculated temperatures are %f, %f, %f\n',minValue,maxValue,meanValue)
+% prints the statisical values
+fprintf(file_id,'\nThe minimum, maximum and mean values of the calculated temperatures are %f, %f, %f\n',minValue,maxValue,meanValue);
 
-fclose(file_id);
+fclose(file_id); % closes the file
 
+% plots the data set
 plot(time,TA);
 grid on
 hold on
@@ -85,7 +86,7 @@ clc
 
 a = arduino("COM3","Uno");
  
-temp_monitor(a)
+temp_monitor(a) % calls the corresponding function
 
 %% TASK 3 - ALGORITHMS – TEMPERATURE PREDICTION [25 MARKS]
 
@@ -94,7 +95,7 @@ clc
 
 a = arduino("COM3","Uno");
 
-temp_prediction(a)
+temp_prediction(a) % calls the corresponding function
 
 
 %% TASK 4 - REFLECTIVE STATEMENT [5 MARKS]

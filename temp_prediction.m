@@ -1,4 +1,4 @@
-function temp_prediction(a)
+function temp_prediction(a) % responds to call in main file
 
 % TEMP_MONITOR
 % This functions records the voltage of the thermistor and calculates the
@@ -21,9 +21,9 @@ function temp_prediction(a)
     A0_voltage = readVoltage(a,"A0");
     fprintf('Current temperature\t Rate of change\t Temperature prediction\n');
 
-    while true 
+    while true % makes the loop continue indefinitely
 
-        pause(1);
+        pause(1); % waits a second
 
         A0_voltage = readVoltage(a,"A0");
         TA = (A0_voltage - V0) / TC;
@@ -32,28 +32,29 @@ function temp_prediction(a)
         temp = [temp,TA];
 
 
-        if length(temp) > 1
-            dTA = abs(temp(end)) - abs(temp(end-1));
-            dt = timeElapsed(end) - timeElapsed(end-1);
+        if length(temp) > 1 % length of temperature array greater than 1 to avoid 0
+ 
+            dTA = abs(temp(end)) - abs(temp(end-1)); % calculates change in temperature of the last calculates value and the one prior to that one
+            dt = timeElapsed(end) - timeElapsed(end-1); % same with the time
             deltaTA = dTA / dt;
-            predTA = TA + (deltaTA * 300);
+            predTA = TA + (deltaTA * 300); % prediction, temperature + change * 5 minutes
             fprintf('%f\t          %9f\t          %f\n',TA, deltaTA, predTA);
             
-            if deltaTA >= -4 && deltaTA <= 4;
+            if deltaTA >= -4 && deltaTA <= 4; % change in temp between -4 and 4
 
-                writeDigitalPin(a,"D7",1);
+                writeDigitalPin(a,"D7",1); % turns on green LED
                 writeDigitalPin(a,"D13",0);
                 writeDigitalPin(a,"D8",0);
 
             elseif deltaTA > 4;
 
-                writeDigitalPin(a,"D8",1);
+                writeDigitalPin(a,"D8",1); % turns on red LED if change in temp is more than 4
                 writeDigitalPin(a,"D13",0);
                 writeDigitalPin(a,"D7",0);
 
-            else deltaTA < -4;
+            else deltaTA < -4; 
 
-                writeDigitalPin(a,"D13",1);
+                writeDigitalPin(a,"D13",1); % turns on yellow LED if less than -4 
                 writeDigitalPin(a,"D8",0);
                 writeDigitalPin(a,"D7",0)
 

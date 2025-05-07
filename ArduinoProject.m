@@ -45,7 +45,7 @@ for t = 1:duration; % loop from 1 - 600
         A0_voltage(t) = readVoltage(a,"A0"); % reads voltage from circuit
         TA(t) = (A0_voltage(t) - V0) / TC; % calculates temperature at each value of t 
         time(t) = t; % stores t in an array
-        %pause(1);
+        pause(1);
 
        if t == 1; % when t is equal to 1 prints initial temperature to file
 

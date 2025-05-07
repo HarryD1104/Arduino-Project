@@ -37,7 +37,7 @@ function temp_prediction(a) % responds to call in main file
             dTA = abs(temp(end)) - abs(temp(end-1)); % calculates change in temperature of the last calculates value and the one prior to that one
             dt = timeElapsed(end) - timeElapsed(end-1); % same with the time
             deltaTA = dTA / dt;
-            predTA = TA + (deltaTA * 300); % prediction, temperature + change * 5 minutes
+            predTA = TA + (deltaTA * 5); % prediction, temperature + change * 5 minutes
             fprintf('%f\t          %9f\t          %f\n',TA, deltaTA, predTA);
             
             if deltaTA >= -4 && deltaTA <= 4; % change in temp between -4 and 4
